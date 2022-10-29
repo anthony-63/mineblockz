@@ -1,3 +1,4 @@
+mod shader;
 mod window;
 extern crate bgfx_rs;
 

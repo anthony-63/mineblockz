@@ -1,4 +1,5 @@
-use bgfx_rs::bgfx::{self};
+use bgfx_rs::static_lib as bgfx;
+
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use std::sync::mpsc::Receiver;
 pub struct MWindow {
