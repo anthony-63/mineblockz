@@ -41,7 +41,7 @@ $(OUT_WINDOWS): $(SRC)
 
 .PHONY: clean
 clean:
-	rm -f $(OUT)
+	rm -f $(OUT_LINUX) $(OUT_WINDOWS)
 .PHONY: run
-run: $(OUT)
-	./$(OUT)
+run: $(OUT_LINUX)
+	./$(OUT_LINUX)

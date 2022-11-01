@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "gfx.h"
 
-typedef struct MBWindow {
+typedef struct {
     GLFWwindow* raw_window;
 } MBWindow;
 
