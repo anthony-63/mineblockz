@@ -7,29 +7,33 @@ GLuint vao = 0;
 GLuint vbo = 0;
 GLuint ibo = 0;
 
+// ALSO TEMPORARY
 const int INDICES_LENGTH = sizeof(CUBE_INDICES) / sizeof(CUBE_INDICES[0]);
 
+// Resize the viewport when the window is resized
 void window_size_callback(GLFWwindow* raw_window, int width, int height) {
     LOG_INFO("Resized: %dx%d", width, height);
     glViewport(0, 0, width, height);
 }
 
-MBWindow* create_mbwindow(int width, int height, const char* title) {
-    MBWindow* window = (MBWindow*)malloc(sizeof * window);
+MBWindow* create_mb_window(int width, int height, const char* title) {
+    MBWindow* window = malloc(sizeof * window);
     LOG_INFO("Allocted window");
 
     if (!glfwInit()) {
         LOG_ERR("Failed to initialize GLFW!");
     }
 
-    // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    // Set the openl profile to core and version to 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window->raw_window = glfwCreateWindow(width, height, title, NULL, NULL);
     LOG_INFO("Created window");
+    // Make sure the resize callback is set
     glfwSetWindowSizeCallback(window->raw_window, window_size_callback);
+
     glfwMakeContextCurrent(window->raw_window);
     LOG_INFO("Created OpenGL context");
 
@@ -39,6 +43,7 @@ MBWindow* create_mbwindow(int width, int height, const char* title) {
 
     LOG_INFO("Initialized GLEW");
 
+    // All this should be self explanatory
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
@@ -52,16 +57,25 @@ MBWindow* create_mbwindow(int width, int height, const char* title) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(CUBE_INDICES), &CUBE_INDICES[0], GL_STATIC_DRAW);
 
+    // create voxel shader(find them in assets/shaders/voxel.*)
+    window->voxel_shader = create_mb_shader("voxel.vs", "voxel.fs");
+    use_mb_shader(window->voxel_shader);
+
     return window;
 }
 
-void destroy_mbwindow(MBWindow* window) {
+void destroy_mb_window(MBWindow* window) {
+    LOG_INFO("Destroying voxel shader");
+    destroy_mb_shader(window->voxel_shader);
+
     LOG_INFO("Destroying window");
     glfwDestroyWindow(window->raw_window);
-    LOG_INFO("Terminating GLFW");
-    glfwTerminate();
+
     LOG_INFO("Freeing window");
     free(window);
+
+    LOG_INFO("Terminating GLFW");
+    glfwTerminate();
 }
 
 void update(MBWindow* window) {
@@ -73,7 +87,7 @@ void draw(MBWindow* window) {
     glDrawElements(GL_TRIANGLES, INDICES_LENGTH, GL_UNSIGNED_INT, NULL);
 }
 
-void run_mbwindow(MBWindow* window) {
+void run_mb_window(MBWindow* window) {
     glClearColor(0.1, 0.2, 0.3, 1.0);
     while (!glfwWindowShouldClose(window->raw_window)) {
         glfwPollEvents();

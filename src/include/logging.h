@@ -1,5 +1,7 @@
 #ifndef MB_LOGGING_H
 #define MB_LOGGING_H
+#include <stdio.h>
+#include <stdlib.h>
 
 enum {
     LOG_LEVEL_ERROR,
@@ -7,6 +9,7 @@ enum {
     LOG_LEVEL_WARNING,
 };
 
+// Colors!
 #define __LOG_WITH_LEVEL(level, ...) \
     switch(level) { \
         case LOG_LEVEL_INFO: printf("\x1b[90m"); break; \

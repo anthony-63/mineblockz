@@ -1,11 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "gfx.h"
+#include "shader.h"
 
 typedef struct {
     GLFWwindow* raw_window;
+    MBShader* voxel_shader;
 } MBWindow;
 
-MBWindow* create_mbwindow(int width, int height, const char* title);
-void destroy_mbwindow(MBWindow* window);
-void run_mbwindow(MBWindow* window);
+// Allocate a window
+MBWindow* create_mb_window(int width, int height, const char* title);
+// Cleanup memory
+void destroy_mb_window(MBWindow* window);
+// Run the loop of polling, updating, and drawing
+void run_mb_window(MBWindow* window);
