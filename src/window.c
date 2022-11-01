@@ -52,6 +52,8 @@ MBWindow* create_mb_window(int width, int height, const char* title) {
 
     LOG_INFO("Initialized GLEW");
 
+    glEnable(GL_DEPTH_TEST);
+
     // All this should be self explanatory
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -95,10 +97,10 @@ void update(MBWindow* window) {
 
     mat4 world_matrix = GLM_MAT4_IDENTITY_INIT;
     mat4 p_matrix = GLM_MAT4_IDENTITY_INIT;
-    glm_perspective(glm_rad(90.0), (double)window->width / (double)window->height, 0.1, 500.0, p_matrix);
+    glm_perspective(glm_rad(70.0), (double)window->width / (double)window->height, 0.01, 500.0, p_matrix);
+    glm_translate(world_matrix, (vec3) { 0.0, 0.0, -2.0 });
     glm_rotate(world_matrix, sin(x / 3.0 * 2.0) / 2.0, (vec3) { 0.0, 1.0, 0.0 });
     glm_rotate(world_matrix, x, (vec3) { 1.0, 0.0, 0.0 });
-    glm_translate(world_matrix, (vec3) { 0.0, 0.0, 1.0 });
 
     load_mb_shader_uniform_matrix(window->voxel_shader, "world_mat", world_matrix);
     load_mb_shader_uniform_matrix(window->voxel_shader, "p_mat", p_matrix);

@@ -9,6 +9,11 @@ enum {
     LOG_LEVEL_WARNING,
 };
 
+#ifdef WIN32
+// No ascii color codes windows cmd prompt :(
+#define __LOG_WITH_LEVEL(level, ...) \
+    printf("[MINEBLOCKZ] "); printf(__VA_ARGS__); printf("\n")
+#else
 // Colors!
 #define __LOG_WITH_LEVEL(level, ...) \
     switch(level) { \
@@ -22,6 +27,8 @@ enum {
         }\
     } \
     printf("[MINEBLOCKZ] "); printf(__VA_ARGS__); printf("\x1B[0m\n")
+#endif
+
 
 #define LOG_INFO(...) __LOG_WITH_LEVEL(LOG_LEVEL_INFO, __VA_ARGS__)
 #define LOG_WARN(...) __LOG_WITH_LEVEL(LOG_LEVEL_WARNING, __VA_ARGS__)

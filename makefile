@@ -12,7 +12,7 @@ CFLAGS_LINUX ?=
 LIBS_LINUX ?= -lglfw -lGL -lglut -lGLEW -lm
 LIBS_WINDOWS ?= -lopengl32 -lglew32 -lglfw3dll -lm
 
-VERSION = v0.1-ALPHA
+VERSION = v0.2-ALPHA
 
 .PHONY: all
 linux: $(OUT_LINUX)
