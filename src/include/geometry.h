@@ -3,10 +3,10 @@
 
 // Basic geometry(these are not cubes yet!)
 const float CUBE_VERTICES[] = {
-    -0.5,  0.5, 1.0,
-    -0.5, -0.5, 1.0,
-     0.5, -0.5, 1.0,
-     0.5,  0.5, 1.0,
+    -0.5,  0.5, 0.0,
+    -0.5, -0.5, 0.0,
+     0.5, -0.5, 0.0,
+     0.5,  0.5, 0.0,
 };
 
 const int CUBE_INDICES[] = {

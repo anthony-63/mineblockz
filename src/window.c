@@ -1,11 +1,17 @@
 #include "include/window.h"
 #include "include/logging.h"
 #include "include/geometry.h"
+#include "include/cglm/struct.h"
+#include "include/cglm/affine.h"
+
+float last = 0.0;
 
 // TEMPORARY
 GLuint vao = 0;
 GLuint vbo = 0;
 GLuint ibo = 0;
+
+float x = 0;
 
 // ALSO TEMPORARY
 const int INDICES_LENGTH = sizeof(CUBE_INDICES) / sizeof(CUBE_INDICES[0]);
@@ -19,6 +25,9 @@ void window_size_callback(GLFWwindow* raw_window, int width, int height) {
 MBWindow* create_mb_window(int width, int height, const char* title) {
     MBWindow* window = malloc(sizeof * window);
     LOG_INFO("Allocted window");
+
+    window->width = width;
+    window->height = height;
 
     if (!glfwInit()) {
         LOG_ERR("Failed to initialize GLFW!");
@@ -60,6 +69,7 @@ MBWindow* create_mb_window(int width, int height, const char* title) {
     // create voxel shader(find them in assets/shaders/voxel.*)
     window->voxel_shader = create_mb_shader("voxel.vs", "voxel.fs");
     use_mb_shader(window->voxel_shader);
+    window->dt = 0;
 
     return window;
 }
@@ -79,7 +89,19 @@ void destroy_mb_window(MBWindow* window) {
 }
 
 void update(MBWindow* window) {
+    window->dt = glfwGetTime() - last;
+    last = glfwGetTime();
+    x += window->dt;
 
+    mat4 world_matrix = GLM_MAT4_IDENTITY_INIT;
+    mat4 p_matrix = GLM_MAT4_IDENTITY_INIT;
+    glm_perspective(glm_rad(90.0), (double)window->width / (double)window->height, 0.1, 500.0, p_matrix);
+    glm_rotate(world_matrix, sin(x / 3.0 * 2.0) / 2.0, (vec3) { 0.0, 1.0, 0.0 });
+    glm_rotate(world_matrix, x, (vec3) { 1.0, 0.0, 0.0 });
+    glm_translate(world_matrix, (vec3) { 0.0, 0.0, 1.0 });
+
+    load_mb_shader_uniform_matrix(window->voxel_shader, "world_mat", world_matrix);
+    load_mb_shader_uniform_matrix(window->voxel_shader, "p_mat", p_matrix);
 }
 
 void draw(MBWindow* window) {

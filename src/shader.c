@@ -79,6 +79,14 @@ void use_mb_shader(MBShader* shader) {
     glUseProgram(shader->program);
 }
 
+int find_mb_shader_uniform(MBShader* shader, char* name) {
+    return glGetUniformLocation(shader->program, name);
+}
+
+void load_mb_shader_uniform_matrix(MBShader* shader, char* name, mat4 matrix) {
+    glUniformMatrix4fv(find_mb_shader_uniform(shader, name), 1, GL_FALSE, (float*)matrix);
+}
+
 void destroy_mb_shader(MBShader* shader) {
     glDeleteProgram(shader->program);
     free(shader);

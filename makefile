@@ -9,8 +9,8 @@ SRC = src/*.c
 CFLAGS_WINDOWS ?= -Llibs/windows/bin -Ilibs/windows/include
 CFLAGS_LINUX ?= 
 
-LIBS_LINUX ?= -lglfw -lGL -lglut -lGLEW
-LIBS_WINDOWS ?= -lopengl32 -lglew32 -lglfw3dll
+LIBS_LINUX ?= -lglfw -lGL -lglut -lGLEW -lm
+LIBS_WINDOWS ?= -lopengl32 -lglew32 -lglfw3dll -lm
 
 VERSION = v0.1-ALPHA
 

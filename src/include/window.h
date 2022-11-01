@@ -4,6 +4,8 @@
 typedef struct {
     GLFWwindow* raw_window;
     MBShader* voxel_shader;
+    int width, height;
+    float dt;
 } MBWindow;
 
 // Allocate a window
